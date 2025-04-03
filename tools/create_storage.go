@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/fabiante/gridscale-mcp/util"
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -34,7 +35,7 @@ func CreateStorage(gs *gsclient.Client) HandlerFactory {
 				Name: request.Params.Arguments["name"].(string),
 			}
 
-			capacity, err := GetIntParam(request.Params.Arguments, "capacity")
+			capacity, err := util.GetIntParam(request.Params.Arguments, "capacity")
 			if err != nil {
 				return nil, fmt.Errorf("capacity parameteris not valid: %w", err)
 			}
@@ -51,16 +52,4 @@ func CreateStorage(gs *gsclient.Client) HandlerFactory {
 
 		return tool, handler
 	}
-}
-
-func GetIntParam(args map[string]any, key string) (int, error) {
-	if value, ok := args[key]; ok {
-		if intValue, ok := value.(int); ok {
-			return intValue, nil
-		} else if floatValue, ok := value.(float64); ok {
-			// FIXME: This is a workaround for the fact that mcp does not support int parameters. This should be removed asap
-			return int(floatValue), nil
-		}
-	}
-	return 0, fmt.Errorf("parameter %s not found or not an integer", key)
 }
