@@ -10,3 +10,7 @@ install:
 
 uninstall:
     sudo rm -f {{install_location}}
+
+# See: https://github.com/modelcontextprotocol/inspector
+inspect:
+    npx @modelcontextprotocol/inspector node build/index.js
