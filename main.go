@@ -39,6 +39,7 @@ func main() {
 
 	addTool(s, tools.CreateIP(gs))
 	addTool(s, tools.CreateStorage(gs))
+	addTool(s, tools.DeleteIP(gs))
 	addResource(s, resources.GetStorageTemplate(gs)) // FIXME: Somehow the LLM does not respond with a list of templates if asked. Check why. Is that an issue of this code or the LLM?
 
 	// Start the server
