@@ -2,6 +2,7 @@ package tools
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/fabiante/gridscale-mcp/util"
 	"github.com/gridscale/gsclient-go/v3"
