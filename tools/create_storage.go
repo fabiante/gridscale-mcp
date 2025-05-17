@@ -37,14 +37,14 @@ func CreateStorage(gs *gsclient.Client) HandlerFactory {
 
 			capacity, err := util.GetIntParam(request.Params.Arguments, "capacity")
 			if err != nil {
-				return nil, fmt.Errorf("capacity parameteris not valid: %w", err)
+				return mcp.NewToolResultErrorFromErr("capacity parameter is not valid", err), nil
 			}
 			gsRequest.Capacity = capacity
 
 			// TODO: Check if we can somehow report progress back to the client. The mcp doc says: Use progress reporting for long operations https://modelcontextprotocol.io/docs/concepts/tools
 			gsResponse, err := gs.CreateStorage(ctx, gsRequest)
 			if err != nil {
-				return nil, fmt.Errorf("failed to get create storage: %w", err)
+				return mcp.NewToolResultErrorFromErr("failed to create storage", err), nil
 			}
 
 			return mcp.NewToolResultText(fmt.Sprintf("Storage created with ID: %s", gsResponse.ObjectUUID)), nil

@@ -3,7 +3,6 @@ package resources
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -21,15 +20,15 @@ func GetStorageTemplate(gs *gsclient.Client) HandlerFactory {
 		handler := Handler(func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
 			templates, err := gs.GetTemplateList(ctx)
 			if err != nil {
-				return nil, fmt.Errorf("failed to get storage templates: %w", err)
+				return nil, mcp.NewToolResultErrorFromErr("failed to get storage templates", err)
 			}
 			if len(templates) == 0 {
-				return nil, fmt.Errorf("no storage templates found")
+				return nil, mcp.NewToolResultError("no storage templates found", nil)
 			}
 
 			templatesJSON, err := json.Marshal(templates)
 			if err != nil {
-				return nil, fmt.Errorf("failed to marshal templates to JSON: %w", err)
+				return nil, mcp.NewToolResultErrorFromErr("failed to marshal templates to JSON", err)
 			}
 
 			return []mcp.ResourceContents{

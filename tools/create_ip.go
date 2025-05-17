@@ -2,7 +2,6 @@ package tools
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/fabiante/gridscale-mcp/util"
 	"github.com/gridscale/gsclient-go/v3"
@@ -25,7 +24,7 @@ func CreateIP(gs *gsclient.Client) HandlerFactory {
 			if ip, err := util.GetIntParam(request.Params.Arguments, "family"); err == nil {
 				gsRequest.Family = gsclient.IPAddressType(ip)
 			} else {
-				return nil, fmt.Errorf("failed to get ip: %w", err)
+				return mcp.NewToolResultErrorFromErr("failed to get ip", err), nil
 			}
 
 			if name, ok := request.Params.Arguments["name"]; ok {
@@ -34,7 +33,7 @@ func CreateIP(gs *gsclient.Client) HandlerFactory {
 
 			gsResponse, err := gs.CreateIP(ctx, gsRequest)
 			if err != nil {
-				return nil, fmt.Errorf("failed to create ip: %w", err)
+				return mcp.NewToolResultErrorFromErr("failed to create ip", err), nil
 			}
 
 			return mcp.NewToolResultText(fmt.Sprintf("IP %s created with ID: %s", gsResponse.IP, gsResponse.ObjectUUID)), nil
