@@ -21,15 +21,15 @@ func GetStorageTemplate(gs *gsclient.Client) HandlerFactory {
 		handler := Handler(func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
 			templates, err := gs.GetTemplateList(ctx)
 			if err != nil {
-				return nil, fmt.Errorf("failed to get storage templates: %w", err)
+				return nil, fmt.Errorf("failed to get storage templates: %w", err) // TODO: Return mcp result/tool/resource error instead of mcp protocol error
 			}
 			if len(templates) == 0 {
-				return nil, fmt.Errorf("no storage templates found")
+				return nil, fmt.Errorf("no storage templates found") // TODO: Return mcp result/tool/resource error instead of mcp protocol error
 			}
 
 			templatesJSON, err := json.Marshal(templates)
 			if err != nil {
-				return nil, fmt.Errorf("failed to marshal templates to JSON: %w", err)
+				return nil, fmt.Errorf("failed to marshal templates to JSON: %w", err) // TODO: Return mcp result/tool/resource error instead of mcp protocol error
 			}
 
 			return []mcp.ResourceContents{
