@@ -2,7 +2,6 @@ package tools
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -20,7 +19,7 @@ func DeleteIP(gs *gsclient.Client) HandlerFactory {
 		handler := Handler(func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			err := gs.DeleteIP(ctx, request.Params.Arguments["uuid"].(string))
 			if err != nil {
-				return nil, fmt.Errorf("failed to delete ip: %w", err)
+				return mcp.NewToolResultErrorFromErr("failed to delete IP", err), nil
 			}
 
 			return mcp.NewToolResultText("IP has been deleted"), nil
