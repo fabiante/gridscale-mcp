@@ -13,14 +13,14 @@ You can use this with tools such as [5ire](https://5ire.app/) to let your LLM pr
 
 With this MCP server you can use the following tools and resources:
 
-| Resource or Tool | Tool                  | Note                             | Supported | Support Wanted |
-|------------------|-----------------------|----------------------------------|-----------|----------------|
-| T                | create_ip             |                                  | Yes       |                |
-| T                | delete_ip             |                                  | Yes       |                |
-| T                | create_storage        | Not all parameters are supported | Partially |                |
-| T                | create_server         |                                  | No        | Yes            |
-| T                | create_network        |                                  | No        | Yes            |
-| R                | get_storage_templates |                                  | Yes       |                |
+| Type | Name                  | Note                             | Supported | Support Wanted |
+|------|-----------------------|----------------------------------|-----------|----------------|
+| Tool | create_ip             |                                  | Yes       |                |
+| Tool | delete_ip             |                                  | Yes       |                |
+| Tool | create_storage        | Not all parameters are supported | Partially |                |
+| Tool | create_server         |                                  | No        | Yes            |
+| Tool | create_network        |                                  | No        | Yes            |
+| Res  | get_storage_templates |                                  | Yes       |                |
 
 If you want to contribute, try adding one of the above missing tools or resources. 
 
