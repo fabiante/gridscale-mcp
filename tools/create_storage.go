@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fabiante/gridscale-mcp/util"
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -31,15 +30,19 @@ func CreateStorage(gs *gsclient.Client) HandlerFactory {
 		tool := mcp.NewTool("create_storage", opts...)
 
 		handler := Handler(func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			gsRequest := gsclient.StorageCreateRequest{
-				Name: request.Params.Arguments["name"].(string),
+			gsRequest := gsclient.StorageCreateRequest{}
+
+			if name, err := request.RequireString("name"); err == nil {
+				gsRequest.Name = name
+			} else {
+				return newInvalidParamErrorResult("name", err)
 			}
 
-			capacity, err := util.GetIntParam(request.Params.Arguments, "capacity")
-			if err != nil {
-				return newUnparsableIntErrorResult("capacity", err)
+			if capacity, err := request.RequireInt("capacity"); err == nil {
+				gsRequest.Capacity = capacity
+			} else {
+				return newInvalidParamErrorResult("capacity", err)
 			}
-			gsRequest.Capacity = capacity
 
 			// TODO: Check if we can somehow report progress back to the client. The mcp doc says: Use progress reporting for long operations https://modelcontextprotocol.io/docs/concepts/tools
 			gsResponse, err := gs.CreateStorage(ctx, gsRequest)

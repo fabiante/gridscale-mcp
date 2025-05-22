@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fabiante/gridscale-mcp/util"
 	"github.com/gridscale/gsclient-go/v3"
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -22,14 +21,16 @@ func CreateIP(gs *gsclient.Client) HandlerFactory {
 		handler := Handler(func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			gsRequest := gsclient.IPCreateRequest{}
 
-			if ip, err := util.GetIntParam(request.Params.Arguments, "family"); err == nil {
+			if ip, err := request.RequireInt("family"); err == nil {
 				gsRequest.Family = gsclient.IPAddressType(ip)
 			} else {
-				return newUnparsableIntErrorResult("family", err)
+				return newInvalidParamErrorResult("family", err)
 			}
 
-			if name, ok := request.Params.Arguments["name"]; ok {
-				gsRequest.Name = name.(string)
+			if name, err := request.RequireString("name"); err == nil {
+				gsRequest.Name = name
+			} else {
+				return newInvalidParamErrorResult("name", err)
 			}
 
 			gsResponse, err := gs.CreateIP(ctx, gsRequest)
