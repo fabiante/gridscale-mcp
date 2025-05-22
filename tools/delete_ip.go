@@ -17,7 +17,14 @@ func DeleteIP(gs *gsclient.Client) HandlerFactory {
 		tool := mcp.NewTool("delete_ip", opts...)
 
 		handler := Handler(func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			err := gs.DeleteIP(ctx, request.Params.Arguments["uuid"].(string))
+			var uuid string
+			if u, err := request.RequireString("uuid"); err == nil {
+				uuid = u
+			} else {
+				return newInvalidParamErrorResult("uuid", err)
+			}
+
+			err := gs.DeleteIP(ctx, uuid)
 			if err != nil {
 				return mcp.NewToolResultErrorFromErr("failed to delete IP", err), nil
 			}
