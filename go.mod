@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/gridscale/gsclient-go/v3 v3.16.0
-	github.com/mark3labs/mcp-go v0.41.0
+	github.com/mark3labs/mcp-go v0.43.0
 )
 
 require (
